@@ -30,3 +30,6 @@ RUN python3 -m venv /venv
 
 # Activate virtual environment
 ENV PATH="/venv/bin:$PATH"
+
+# Install dependencies
+RUN pip install asyncua
