@@ -19,11 +19,13 @@ RUN apk update && apk add --no-cache \
     py3-pip \
     py3-lxml \
     yaml-dev \
-    rust
+    rust \
+    gcc \
+    musl-dev \
+    cargo
 
-RUN apk add gcc musl-dev python3-dev libffi-dev libressl-dev cargo
 
-RUN pip install --upgrade pip setuptools
+# RUN pip install --upgrade pip setuptools
 
 # Create virtual environment
 RUN python3 -m venv /venv
@@ -33,3 +35,14 @@ ENV PATH="/venv/bin:$PATH"
 
 # Install dependencies
 RUN pip install asyncua
+
+# clean the cache
+RUN rm -rf /var/cache/apk/* \
+    && rm -rf /root/.cache \
+    && rm -rf /root/.cargo \
+    && rm -rf /root/.rustup \
+    && rm -rf /tmp/*
+
+COPY *.py ./
+
+CMD ["python3", "app.py"]
